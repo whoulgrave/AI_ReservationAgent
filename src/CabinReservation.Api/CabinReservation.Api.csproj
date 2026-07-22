@@ -24,8 +24,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.20" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\CabinReservation.Persistence\CabinReservation.Persistence.csproj" />
-  </ItemGroup>
 </Project>
