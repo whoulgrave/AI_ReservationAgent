@@ -1,0 +1,16 @@
+services:
+  cabin-api:
+    build: .
+    container_name: cabin-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__CabinDatabase: Data Source=/app/data/cabin.db;Cache=Shared;Foreign Keys=True
+      ApiSecurity__ApiKey: ${CABIN_API_KEY}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - cabin-data:/app/data
+
+volumes:
+  cabin-data:

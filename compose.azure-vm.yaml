@@ -1,0 +1,41 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: src/CabinReservation.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ApiSecurity__ApiKey: ${CABIN_API_KEY}
+    volumes: [ "cabin-data:/app/data" ]
+    ports: [ "127.0.0.1:8080:8080" ]
+  mcp:
+    build:
+      context: .
+      dockerfile: src/CabinReservation.HermesMcp/Dockerfile
+    environment:
+      CabinApi__BaseAddress: http://api:8080/
+      CabinApi__ApiKey: ${CABIN_API_KEY}
+    depends_on: [ api ]
+    ports: [ "127.0.0.1:8081:8080" ]
+  messaging:
+    build:
+      context: .
+      dockerfile: src/CabinReservation.Messaging/Dockerfile
+    environment:
+      CabinApi__BaseAddress: http://api:8080/
+      CabinApi__ApiKey: ${CABIN_API_KEY}
+      Messaging__AcsConnectionString: ${ACS_CONNECTION_STRING}
+      Messaging__SmsFromNumber: ${ACS_PHONE_NUMBER}
+    depends_on: [ api ]
+  voice:
+    build:
+      context: .
+      dockerfile: src/CabinReservation.Voice/Dockerfile
+    environment:
+      CabinApi__BaseAddress: http://api:8080/
+      CabinApi__ApiKey: ${CABIN_API_KEY}
+      Voice__AcsConnectionString: ${ACS_CONNECTION_STRING}
+      Voice__AcsPhoneNumber: ${ACS_PHONE_NUMBER}
+      Voice__PublicBaseUri: ${PUBLIC_BASE_URI}
+    depends_on: [ api ]
+volumes: { cabin-data: {} }

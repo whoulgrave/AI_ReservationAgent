@@ -1,0 +1,26 @@
+@host = https://localhost:7001
+@apiKey = development-only-key
+
+### Health
+GET {{host}}/health
+
+### List members
+GET {{host}}/api/members
+X-Api-Key: {{apiKey}}
+
+### Calendar
+GET {{host}}/api/calendar?from=2026-08-01&to=2026-08-31
+X-Api-Key: {{apiKey}}
+
+### Create reservation
+POST {{host}}/api/reservations
+Content-Type: application/json
+X-Api-Key: {{apiKey}}
+X-Correlation-ID: sample-create-001
+
+{
+  "clubNumber": "001",
+  "cabinDate": "2026-08-15",
+  "sourceChannel": "Email",
+  "idempotencyKey": "email-provider-message-id-001"
+}

@@ -1,0 +1,1 @@
+using Microsoft.AspNetCore.Authorization; using Microsoft.AspNetCore.Mvc.RazorPages; namespace CabinReservation.Admin.Pages; [Authorize(Policy="Roster")] public sealed class RosterModel : PageModel { }

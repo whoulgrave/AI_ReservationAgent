@@ -1,0 +1,22 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CabinReservation.Persistence/bin/Debug/net8.0
+/CabinReservation.Persistence/obj
+/src/CabinReservation.Admin/bin/Debug/net8.0
+/src/CabinReservation.Admin/obj
+/src/CabinReservation.AzureInfrastructure/bin/Debug/net8.0
+/src/CabinReservation.AzureInfrastructure/obj
+/src/CabinReservation.EmailIntake/bin/Debug/net8.0
+/src/CabinReservation.EmailIntake/obj
+/src/CabinReservation.HermesMcp/bin/Debug/net8.0
+/src/CabinReservation.HermesMcp/obj
+/src/CabinReservation.Integration/bin/Debug/net8.0
+/src/CabinReservation.Integration/obj
+/src/CabinReservation.Messaging/bin/Debug/net8.0
+/src/CabinReservation.Messaging/obj
+/src/CabinReservation.Voice/bin/Debug/net8.0
+/src/CabinReservation.Voice/obj
+/tests/CabinReservation.Api.Tests/bin/Debug/net8.0
+/tests/CabinReservation.Api.Tests/obj
