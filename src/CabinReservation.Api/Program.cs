@@ -15,7 +15,9 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddDbContext<CabinDbContext>(options =>
+//builder.Services.AddDbContext<CabinDbContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("CabinDatabase")));
+builder.Services.AddDbContextFactory<CabinDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("CabinDatabase")));
 
 builder.Services.AddScoped<ISystemClock, SystemClock>();

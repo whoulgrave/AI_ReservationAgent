@@ -8,7 +8,7 @@ public static class WaitListEndpoints
 {
     public static IEndpointRouteBuilder MapWaitListEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/waitlist").WithTags("Waiting List");
+        var group = app.MapGroup("/api/waitlist").WithTags("WaitList");
 
         group.MapPost("/", async (
             [FromBody] JoinWaitListRequest request,

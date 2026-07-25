@@ -3,6 +3,7 @@ using CabinReservation.Persistence.Context;
 using CabinReservation.Persistence.Domain;
 using CabinReservation.Persistence.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace CabinReservation.Api.Services;
 
@@ -13,22 +14,37 @@ public interface IMemberService
     Task<IReadOnlyList<MemberResponse>> GetAllAsync(CancellationToken ct);
 }
 
-public sealed class MemberService(CabinDbContext db, ISystemClock clock, IAuditWriter audit) : IMemberService
+public sealed class MemberService : IMemberService
 {
+    private readonly IDbContextFactory<CabinDbContext> _contextFactory;
+    private readonly ISystemClock clock;
+    private readonly IAuditWriter audit;
+
+    public MemberService(IDbContextFactory<CabinDbContext> contextFactory, ISystemClock clock, IAuditWriter audit)
+    {
+        _contextFactory = contextFactory;
+        this.clock = clock;
+        this.audit = audit;
+    }
+
     public async Task<MemberResponse?> GetAsync(string clubNumber, CancellationToken ct)
     {
+        await using var db = await _contextFactory.CreateDbContextAsync(ct);
         var member = await db.Members.AsNoTracking()
             .SingleOrDefaultAsync(x => x.ClubNumber == clubNumber, ct);
         return member is null ? null : ToResponse(member);
     }
 
-    public async Task<IReadOnlyList<MemberResponse>> GetAllAsync(CancellationToken ct) =>
-        await db.Members.AsNoTracking().OrderBy(x => x.ClubNumber)
+    public async Task<IReadOnlyList<MemberResponse>> GetAllAsync(CancellationToken ct)
+    {
+        await using var db = await _contextFactory.CreateDbContextAsync(ct);
+        return await db.Members.AsNoTracking().OrderBy(x => x.ClubNumber)
             .Select(x => new MemberResponse(
                 x.Id, x.ClubNumber, x.FullName, x.EmailAddress, x.MobileNumber, x.PhoneNumber,
                 x.PreferredChannel, x.PreferredChannelVerified, x.IsActive,
                 x.CanViewReports, x.CanViewAuditLog, x.CanUploadRoster))
             .ToListAsync(ct);
+    }
 
     public async Task<ApiResult<MemberResponse>> UpdatePreferenceAsync(
         string clubNumber,
@@ -36,6 +52,7 @@ public sealed class MemberService(CabinDbContext db, ISystemClock clock, IAuditW
         string correlationId,
         CancellationToken ct)
     {
+        await using var db = await _contextFactory.CreateDbContextAsync(ct);
         var member = await db.Members.SingleOrDefaultAsync(x => x.ClubNumber == clubNumber, ct);
         if (member is null)
             return new(false, "MEMBER_NOT_FOUND", "Member not found.", null);

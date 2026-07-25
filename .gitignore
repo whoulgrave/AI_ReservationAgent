@@ -22,3 +22,6 @@
 /tests/CabinReservation.Api.Tests/obj
 /src/CabinReservation.Persistence/bin/Debug/net8.0
 /src/CabinReservation.Persistence/obj
+/docs/~$hokeReservationSystem.docx
+/.github/copilot-instructions.md
+/.vs
